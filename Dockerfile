@@ -1,10 +1,16 @@
-FROM debian:11
+FROM ubuntu:latest
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -yq --no-install-recommends \ 
+    php php-ldap php-imap php-apcu apache2 \
+    php-xmlrpc php-cas php-mysqli php-mbstring php-curl php-gd php-simplexml php-xml php-intl php-zip php-bz2
 
-run apt-get update
-run apt-get upgrade
-run apt-get install php
-run apt-get install php-ldap php-imap php-apcu php-xmlrpc php-cas php-mysqli php-mbstring php-curl php-gd php-simplexml php-xml php-intlk php-zip php-bz2
-cd /tmp/
-wget https://github.com/glpi-project/glpi/releases/download/10.0.2/glpi-10.0.2.tgz
-run tar xzf glpi-10.0.2.tgz -C /var/wwww/html
-run rm -r glpi-10.0.2.tgz
+WORKDIR /var/www/html
+ADD glpi-10.0.2.tgz .
+RUN chown -R www-data:www-data /var/www/html/glpi
+RUN chmod -R 775 /var/www/html/glpi
+ADD php.ini /etc/php/8.1/apache2/
+ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
+#ADD config_db.php /var/www/html/glpi/config/config_db.php
+COPY start.sh /opt
+RUN chmod +x /opt/start.sh
+CMD ["/opt/start.sh"]
