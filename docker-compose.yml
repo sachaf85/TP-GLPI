@@ -19,6 +19,8 @@ services:
     hostname: glpi
     ports:
       - "80:80"
+    volumes:
+      - ./storage/glpi:/var/www/html/glpi
     environment:
       - TIMEZONE=Europe/Brussels
     restart: always
