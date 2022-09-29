@@ -6,9 +6,9 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
 
 WORKDIR /var/www/html
 #ADD glpi-10.0.2.tgz .
-#RUN mkdir /var/www/html/glpi
-#RUN chown -R www-data:www-data /var/www/html/glpi
-#RUN chmod -R 775 /var/www/html/glpi
+RUN mkdir /var/www/html/glpi
+RUN chown -R www-data:www-data /var/www/html/glpi
+RUN chmod -R 775 /var/www/html/glpi
 ADD php.ini /etc/php/8.1/apache2/
 ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
 #ADD config_db.php /var/www/html/glpi/config/config_db.php
